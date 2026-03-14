@@ -12,6 +12,7 @@ import { env } from './config/env.js';
 import { authRoutes } from './modules/auth/routes/auth.route.js';
 import { oauthRoutes } from './modules/auth/routes/oauth.route.js';
 import { productRoutes } from './modules/product/routes/product.routes.js';
+import { shippingRoutes } from './modules/shipping/routes/shipping.routes.js';
 import swagger from '@fastify/swagger';
 import ScalarApiReference from '@scalar/fastify-api-reference'
 import cors from '@fastify/cors'
@@ -76,6 +77,7 @@ export async function buildApp() {
   await app.register(productRoutes, { prefix: '/api/products' });
   await app.register(oauthRoutes, { prefix: '/api/auth/oauth' });
   await app.register(authRoutes, { prefix: '/api/auth' });
+  await app.register(shippingRoutes, { prefix: '/api/shipping' })
 
   // Error handler
   app.setErrorHandler((error: FastifyError, request, reply) => {
