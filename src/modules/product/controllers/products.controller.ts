@@ -23,7 +23,7 @@ export async function createProductController(
   reply: FastifyReply,
 ) {
   const { id, isAdmin } = req.user as any;
-  const { name, description, price, imageUrl, stockQuantity } =
+  const { name, description, price, imageUrl, stockQuantity, height, weight, length, width } =
     req.body as createProductInput;
 
 
@@ -37,6 +37,11 @@ export async function createProductController(
     price,
     imageUrl,
     stockQuantity,
+    height,
+    weight,
+    length,
+    width
+
   );
   if(!product) {
     return reply.status(500).send({ message: "Failed to create product" });
