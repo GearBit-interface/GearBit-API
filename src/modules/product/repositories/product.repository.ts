@@ -11,6 +11,10 @@ export async function createProduct(
   price: number,
   imageUrl: string,
   stockQuantity: number,
+  height: number,
+  weight: number,
+  length: number,
+  width: number
 ) {
   return await prisma.product.create({
     data: {
@@ -19,6 +23,10 @@ export async function createProduct(
       price,
       imageUrl,
       stockQuantity,
+      height,
+      weight,
+      length,
+      width,
     },
   });
 }
