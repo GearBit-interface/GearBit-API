@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 const envSchema = z.object({
   DATABASE_URL: z.string().url(),
+  REDIS_URL: z.string().url(),
   PORT: z.coerce.number().default(3000),
 
   // JWT
@@ -31,6 +32,9 @@ const envSchema = z.object({
   GITHUB_CLIENT_ID: z.string().min(1),
   GITHUB_CLIENT_SECRET: z.string().min(1),
   GITHUB_CALLBACK_URL: z.string().url(),
+
+  MELHOR_ENVIO_TOKEN: z.string(),
+  MELHOR_ENVIO_CEP_ORIGEM: z.string()
 });
 
 export const env = envSchema.parse(process.env);
