@@ -13,7 +13,7 @@ import {
   findOAuthAccount,
   createOAuthAccount,
 } from '../../../repositories/auth.repository.js';
-import { normalizeAvatarUrl } from '../../../utils/avatarUrl.js';
+import { normalizeAvatarUrl } from '../../../../../lib/avatarUrl.js';
 
 const GOOGLE_AUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
 const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';

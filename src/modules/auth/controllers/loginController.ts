@@ -15,7 +15,11 @@ export async function loginController(
 
   const user = await findUniqueByEmail(email);
   if (!user) {
-    return reply.status(401).send({ success: false, message: 'User not Found' });
+    return reply.status(401).send({
+      success: false,
+      message: 'Usuario nao encontrado',
+      statusCode: 401,
+    });
   }
 
   if (!user.password) {
@@ -28,12 +32,20 @@ export async function loginController(
       html: verificationCodeTemplate(code),
     });
 
-    return reply.status(200).send({ success: true, message: 'Verification code sent to email' });
+    return reply.status(200).send({
+      success: true,
+      message: 'Codigo de verificacao enviado por email',
+      statusCode: 200,
+    });
   }
 
   const passwordMatch = await comparePassword(password, user.password);
   if (!passwordMatch) {
-    return reply.status(401).send({ success: false, message: 'Invalid credentials' });
+    return reply.status(401).send({
+      success: false,
+      message: 'Credenciais invalidas',
+      statusCode: 401,
+    });
   }
 
   const code = await createVerificationCode(email, password, user.name);
@@ -45,5 +57,9 @@ export async function loginController(
     html: verificationCodeTemplate(code),
   });
 
-  return reply.status(200).send({ success: true, message: 'Verification code sent to email' });
+  return reply.status(200).send({
+    success: true,
+    message: 'Codigo de verificacao enviado por email',
+    statusCode: 200,
+  });
 }

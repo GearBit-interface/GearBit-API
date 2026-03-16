@@ -13,7 +13,7 @@ import {
   findOAuthAccount,
   createOAuthAccount,
 } from '../../../repositories/auth.repository.js';
-import { normalizeAvatarUrl } from '../../../utils/avatarUrl.js';
+import { normalizeAvatarUrl } from '../../../../../lib/avatarUrl.js';
 
 const GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
 const GITHUB_TOKEN_URL = 'https://github.com/login/oauth/access_token';

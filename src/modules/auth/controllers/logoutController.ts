@@ -9,5 +9,9 @@ export async function logoutController(req: FastifyRequest, reply: FastifyReply)
   reply.clearCookie('accessToken', { path: '/' });
   reply.clearCookie('refreshToken', { path: '/' });
 
-  return reply.status(200).send({ success: true, message: 'Logged out successfully' });
+  return reply.status(200).send({
+    success: true,
+    message: 'Logout realizado com sucesso',
+    statusCode: 200,
+  });
 }

@@ -3,7 +3,7 @@
  */
 
 import { FastifyInstance } from "fastify";
-import { authMiddleware } from "../../auth/middleware/auth.middleware.js";
+import { authMiddleware } from "../../../shared/middleware/auth.middleware.js";
 import {
   createProductSchema,
   updateProductSchema,

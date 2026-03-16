@@ -7,7 +7,7 @@ import {
   githubCallbackController,
   githubRedirectController,
 } from '../controllers/oauth/github/githubCallbackController';
-import { notLoggedMiddleware } from '../middleware/notLogged.middleware';
+import { notLoggedMiddleware } from '../../../shared/middleware/notLogged.middleware';
 
 export async function oauthRoutes(app: FastifyInstance) {
   app.get('/google', { preHandler: notLoggedMiddleware, schema: { tags: ['auth'], description: 'Redirect to Google for authentication' } }, googleRedirectController);

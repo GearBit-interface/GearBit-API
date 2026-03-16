@@ -184,7 +184,7 @@ describe('GET /api/products', () => {
         });
         expect(response.statusCode).toBe(200);
         const body = response.json();
-        expect(Array.isArray(body.products)).toBe(true);
+        expect(Array.isArray(body.data.products)).toBe(true);
     });
 });
 

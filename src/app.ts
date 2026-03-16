@@ -12,12 +12,13 @@ import { env } from './config/env.js';
 import { authRoutes } from './modules/auth/routes/auth.route.js';
 import { oauthRoutes } from './modules/auth/routes/oauth.route.js';
 import { productRoutes } from './modules/product/routes/product.routes.js';
-import { shippingRoutes } from './modules/shipping/routes/shipping.routes.js';
+import { shippingRoutes } from './modules/freight/routes/freight.routes.js';
 import swagger from '@fastify/swagger';
 
 import cors from '@fastify/cors'
 import redis from './lib/redis.js';
 import fastifySwaggerUi from '@fastify/swagger-ui';
+import { cartRoutes } from './modules/cartShopping/routes/cart.routes.js';
 
 
 export async function buildApp() {
@@ -76,6 +77,7 @@ export async function buildApp() {
   })
 
   // Routes
+  await app.register(cartRoutes, { prefix: '/api/cart' })
   await app.register(productRoutes, { prefix: '/api/products' });
   await app.register(oauthRoutes, { prefix: '/api/auth/oauth' });
   await app.register(authRoutes, { prefix: '/api/auth' });
@@ -84,17 +86,23 @@ export async function buildApp() {
   // Error handler
   app.setErrorHandler((error: FastifyError, request, reply) => {
     app.log.error(error);
-    reply.status(error.statusCode ?? 500).send({
+    const statusCode = error.statusCode ?? 500;
+
+    reply.status(statusCode).send({
       success: false,
-      message: error.message ?? 'Internal server error',
+      message: error.message ?? 'Erro interno do servidor',
+      statusCode,
     });
   });
 
   // 404 handler
   app.setNotFoundHandler((request, reply) => {
-    reply.status(404).send({
+    const statusCode = 404;
+
+    reply.status(statusCode).send({
       success: false,
-      message: `Route ${request.method} ${request.url} not found`,
+      message: `Rota ${request.method} ${request.url} nao encontrada`,
+      statusCode,
     });
   });
 

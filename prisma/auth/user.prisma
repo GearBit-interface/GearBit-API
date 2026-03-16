@@ -16,6 +16,7 @@ model User {
   updatedAt  DateTime @updatedAt
 
   Order         Order[]
+  cartShopping  CartShopping?
   sessions      Session[]
   activeLogs    ActiveLog[]
   pendingAuths  PendingAuth[]

@@ -1,6 +1,6 @@
 enum OrderStatus {
   PENDING
-  COMPLETED
+  PAID
   CANCELED
 }
 

@@ -13,7 +13,7 @@ const RATE_LIMIT_CONFIG: Record<string, { maxHits: number; windowMs: number }> =
 };
 
 export async function rateLimitMiddleware(request: FastifyRequest, reply: FastifyReply) {
-if (process.env.NODE_ENV === 'test') return;  
+  if (process.env.NODE_ENV === 'test') return;
 
   const route = request.routeOptions.url ?? request.url;
   const config = RATE_LIMIT_CONFIG[route];
@@ -39,8 +39,9 @@ if (process.env.NODE_ENV === 'test') return;
     const retryAfter = Math.ceil((rateLimit!.expiresAt.getTime() - now.getTime()) / 1000);
     return reply.status(429).send({
       success: false,
-      message: 'Too many requests. Try again later.',
-      retryAfter,
+      message: 'Muitas requisicoes. Tente novamente mais tarde',
+      statusCode: 429,
+      data: { retryAfter },
     });
   }
 }
