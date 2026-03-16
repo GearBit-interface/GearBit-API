@@ -29,7 +29,11 @@ export async function createProductController(
 
 
   if (!isAdmin) {
-    return reply.status(403).send({ message: "Forbidden: Admins only" });
+    return reply.status(403).send({
+      success: false,
+      message: 'Acesso negado: apenas administradores',
+      statusCode: 403,
+    });
   }
 
   const product = await createProduct(
@@ -47,7 +51,11 @@ export async function createProductController(
 
 
   if (!product) {
-    return reply.status(500).send({ message: "Failed to create product" });
+    return reply.status(500).send({
+      success: false,
+      message: 'Falha ao criar produto',
+      statusCode: 500,
+    });
   }
 
   await redis.del('products')
@@ -55,7 +63,12 @@ export async function createProductController(
 
   return reply
     .status(201)
-    .send({ message: "Product created successfully", product });
+    .send({
+      success: true,
+      message: 'Produto criado com sucesso',
+      statusCode: 201,
+      data: { product },
+    });
 
 }
 // DELETE PRODUCT
@@ -64,12 +77,20 @@ export async function deleteProductController(req: FastifyRequest, reply: Fastif
   const { isAdmin } = req.user as any;
 
   if (!isAdmin) {
-    return reply.status(403).send({ message: 'Forbidden: Admins only' });
+    return reply.status(403).send({
+      success: false,
+      message: 'Acesso negado: apenas administradores',
+      statusCode: 403,
+    });
   }
 
   const product = await getProductById(id);
   if (!product) {
-    return reply.status(404).send({ message: 'Product not found' });
+    return reply.status(404).send({
+      success: false,
+      message: 'Produto nao encontrado',
+      statusCode: 404,
+    });
   }
 
   await deleteProduct(id);
@@ -77,7 +98,11 @@ export async function deleteProductController(req: FastifyRequest, reply: Fastif
   await redis.del('products')
   await redis.del(`product:${id}`)
 
-  return reply.status(200).send({ message: 'Product deleted successfully' });
+  return reply.status(200).send({
+    success: true,
+    message: 'Produto removido com sucesso',
+    statusCode: 200,
+  });
 }
 
 // UPDATE PRODUCT
@@ -90,12 +115,20 @@ export async function updateProductController(
   const { isAdmin } = req.user as any;
 
   if (!isAdmin) {
-    return reply.status(403).send({ message: "Forbidden: Admins only" });
+    return reply.status(403).send({
+      success: false,
+      message: 'Acesso negado: apenas administradores',
+      statusCode: 403,
+    });
   }
 
   const product = await getProductById(id);
   if (!product) {
-    return reply.status(404).send({ message: "Product not found" });
+    return reply.status(404).send({
+      success: false,
+      message: 'Produto nao encontrado',
+      statusCode: 404,
+    });
   }
 
   const updatedProduct = await updateProduct(id, data);
@@ -105,7 +138,12 @@ export async function updateProductController(
 
   return reply
     .status(200)
-    .send({ message: "Product updated successfully", product: updatedProduct });
+    .send({
+      success: true,
+      message: 'Produto atualizado com sucesso',
+      statusCode: 200,
+      data: { product: updatedProduct },
+    });
 }
 
 // GET ALL PRODUCTS
@@ -121,20 +159,34 @@ export async function productsController(
     if (!products) {
       return reply
         .status(404)
-        .send({ message: "No products avaliable" });
+        .send({
+          success: false,
+          message: 'Nenhum produto disponivel',
+          statusCode: 404,
+        });
     }
 
     await redis.set('products', JSON.stringify(products), 'EX', 60 * 60)
     return reply
       .status(200)
-      .send({ message: "product retrieved successfully", products });
+      .send({
+        success: true,
+        message: 'Produtos recuperados com sucesso',
+        statusCode: 200,
+        data: { products },
+      });
 
   }
 
   const products = JSON.parse(cached)
   return reply
     .status(200)
-    .send({ message: "product retrieved successfully", products });
+    .send({
+      success: true,
+      message: 'Produtos recuperados com sucesso',
+      statusCode: 200,
+      data: { products },
+    });
 }
 
 // GET PRODUCT BY ID
@@ -152,13 +204,22 @@ export async function productController(
     if (!product) {
       return reply
         .status(404)
-        .send({ message: "Product Not Found" });
+        .send({
+          success: false,
+          message: 'Produto nao encontrado',
+          statusCode: 404,
+        });
     }
 
     await redis.set(`product:${id}`, JSON.stringify(product), 'EX', 60 * 60)
     return reply
       .status(200)
-      .send({ message: "product retrieved successfully", product });
+      .send({
+        success: true,
+        message: 'Produto recuperado com sucesso',
+        statusCode: 200,
+        data: { product },
+      });
 
   }
 
@@ -166,5 +227,10 @@ export async function productController(
 
   return reply
     .status(200)
-    .send({ message: "product retrieved successfully", product });
+    .send({
+      success: true,
+      message: 'Produto recuperado com sucesso',
+      statusCode: 200,
+      data: { product },
+    });
 }

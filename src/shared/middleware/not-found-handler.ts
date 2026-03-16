@@ -1,8 +1,11 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 export function notFoundHandler(request: FastifyRequest, reply: FastifyReply) {
-  reply.status(404).send({
-    status: 'error',
-    message: `Rota ${request.method} ${request.url} não encontrada`,
+  const statusCode = 404;
+
+  reply.status(statusCode).send({
+    success: false,
+    message: `Rota ${request.method} ${request.url} nao encontrada`,
+    statusCode,
   });
 }

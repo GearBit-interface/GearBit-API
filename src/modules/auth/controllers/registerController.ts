@@ -14,7 +14,11 @@ export async function registerController(
 
   const user = await findUniqueByEmail(email);
   if (user) {
-    return reply.status(403).send({ success: false, message: 'Email already registered' });
+    return reply.status(403).send({
+      success: false,
+      message: 'Email ja cadastrado',
+      statusCode: 403,
+    });
   }
 
   const code = await createVerificationCode(email, password, name);
@@ -26,5 +30,9 @@ export async function registerController(
     html: verificationCodeTemplate(code),
   });
 
-  return reply.status(201).send({ success: true, message: 'Verification code sent to email' });
+  return reply.status(201).send({
+    success: true,
+    message: 'Codigo de verificacao enviado por email',
+    statusCode: 201,
+  });
 }

@@ -1,0 +1,14 @@
+model CartItem {
+	id             String       @id @default(uuid())
+	cartShoppingId String
+	productId      String
+	quantity       Int          @default(1)
+	unitPrice      Float
+	createdAt      DateTime     @default(now())
+	updatedAt      DateTime     @updatedAt
+
+	cartShopping CartShopping @relation(fields: [cartShoppingId], references: [id], onDelete: Cascade)
+	product      Product      @relation(fields: [productId], references: [id])
+
+	@@unique([cartShoppingId, productId])
+}

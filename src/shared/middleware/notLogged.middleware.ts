@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { verifyAccessToken, verifyRefreshToken } from '../../../lib/token';
+import { verifyAccessToken, verifyRefreshToken } from '../../lib/token';
 
 export async function notLoggedMiddleware(request: FastifyRequest, reply: FastifyReply) {
   const accessToken = request.cookies['accessToken'];
@@ -15,7 +15,8 @@ export async function notLoggedMiddleware(request: FastifyRequest, reply: Fastif
       if (isValid) {
         return reply.status(400).send({
           success: false,
-          message: 'Usuario já está autenticado',
+          message: 'Usuario ja esta autenticado',
+          statusCode: 400,
         });
       }
     } catch {
@@ -30,7 +31,8 @@ export async function notLoggedMiddleware(request: FastifyRequest, reply: Fastif
       if (isValid) {
         return reply.status(400).send({
           success: false,
-          message: 'Usuario já autenticado',
+          message: 'Usuario ja autenticado',
+          statusCode: 400,
         });
       }
     } catch {

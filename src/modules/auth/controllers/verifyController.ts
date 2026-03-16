@@ -23,7 +23,11 @@ export async function verifyController(
 
   const validation = await validateVerificationCode(email, code);
   if (!validation.success || !validation.pendingAuth) {
-    return reply.status(401).send({ success: false, message: validation.message });
+    return reply.status(401).send({
+      success: false,
+      message: validation.message,
+      statusCode: 401,
+    });
   }
 
   const { pendingAuth } = validation;
@@ -82,5 +86,9 @@ export async function verifyController(
     maxAge: 60 * 15,
   });
 
-  return reply.status(200).send({ success: true, message: 'Authenticated successfully' });
+  return reply.status(200).send({
+    success: true,
+    message: 'Autenticado com sucesso',
+    statusCode: 200,
+  });
 }

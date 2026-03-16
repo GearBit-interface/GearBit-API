@@ -1,12 +1,13 @@
 import prisma from "#database"
 
 
+
 // TODO: ADICIONAR APOSSUBIR APLICACAO NO AR
 export async function calculateShippingFic(productId: string, cepDestino: string) {
     const product = await prisma.product.findUnique({
         where: { id: productId }
     })
-    if (!product) throw new Error("Produto não encontrado")
+    if (!product) return
 
     return [
         { name: "PAC", price: 19.90, delivery_time: 7 },

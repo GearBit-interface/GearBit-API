@@ -13,7 +13,11 @@ export async function refreshController(req: FastifyRequest, reply: FastifyReply
   const refreshToken = req.cookies['refreshToken'];
 
   if (!refreshToken) {
-    return reply.status(401).send({ success: false, message: 'Unauthorized' });
+    return reply.status(401).send({
+      success: false,
+      message: 'Nao autorizado',
+      statusCode: 401,
+    });
   }
 
   try {
@@ -22,14 +26,22 @@ export async function refreshController(req: FastifyRequest, reply: FastifyReply
   } catch {
     reply.clearCookie('accessToken', { path: '/' });
     reply.clearCookie('refreshToken', { path: '/' });
-    return reply.status(401).send({ success: false, message: 'Invalid or expired refresh token' });
+    return reply.status(401).send({
+      success: false,
+      message: 'Refresh token invalido ou expirado',
+      statusCode: 401,
+    });
   }
 
   const session = await findSessionByRefreshToken(refreshToken);
   if (!session) {
     reply.clearCookie('accessToken', { path: '/' });
     reply.clearCookie('refreshToken', { path: '/' });
-    return reply.status(401).send({ success: false, message: 'Session not found' });
+    return reply.status(401).send({
+      success: false,
+      message: 'Sessao nao encontrada',
+      statusCode: 401,
+    });
   }
 
   const newRefreshToken = generateRefreshToken(session.userId);
@@ -55,5 +67,9 @@ export async function refreshController(req: FastifyRequest, reply: FastifyReply
     maxAge: 60 * 15,
   });
 
-  return reply.status(200).send({ success: true, message: 'Token refreshed' });
+  return reply.status(200).send({
+    success: true,
+    message: 'Token renovado com sucesso',
+    statusCode: 200,
+  });
 }
